@@ -20,7 +20,7 @@ def extract_hyperlinks(url):
         return []
 
 # Example usage
-url = "https://www.northeastern.edu/"
+url = "https://searchneu.com/NEU/202550/search"
 hyperlinks = extract_hyperlinks(url)
 
 print("Extracted Hyperlinks:")
