@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DOM Manipulation Example</title>
+  <style>
+    .highlight { background-color: yellow; }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <p class="text">Hello, World!</p>
+    <button id="btn">Click Me</button>
+  </div>
+
+  <script>
+    // Access elements
+    const container = document.getElementById("container");
+    const text = document.querySelector(".text");
+    const button = document.getElementById("btn");
+
+    // Modify content
+    text.textContent = "This text has been updated!";
+
+    // Add a class
+    text.classList.add("highlight");
+
+    // Create a new element
+    const newParagraph = document.createElement("p");
+    newParagraph.textContent = "This is a new paragraph.";
+    container.appendChild(newParagraph);
+
+    // Add an event listener
+    button.addEventListener("click", () => {
+      alert("Button clicked!");
+    });
+  </script>
+</body>
+</html>
