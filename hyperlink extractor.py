@@ -1,28 +1,41 @@
-import requests
-from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
-def extract_hyperlinks(url):
+
+def extract_content_and_hyperlinks(url):
+    # Set up Selenium WebDriver
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")  # Run in headless mode
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
     try:
-        # Send a GET request to the URL
-        response = requests.get(url)
-        response.raise_for_status()  # Raise an error for bad HTTP responses (4xx, 5xx)
+        driver.get(url)
 
-        # Parse the HTML content
-        soup = BeautifulSoup(response.text, 'html.parser')
+        # Extract all hyperlinks
+        hyperlinks = [a.get_attribute("href")
+                      for a in driver.find_elements(By.TAG_NAME, "a")
+                      if a.get_attribute("href")]
 
-        # Extract all <a> tags with href attributes
-        hyperlinks = [a['href'] for a in soup.find_all('a', href=True)]
+        # Extract main content (visible text)
+        content = driver.find_element(By.TAG_NAME, 'body').text
 
-        return hyperlinks
+        return {
+            'hyperlinks': hyperlinks,
+            'content': content
+        }
+    finally:
+        driver.quit()
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching the URL: {e}")
-        return []
 
 # Example usage
-url = "https://www.northeastern.edu/"
-hyperlinks = extract_hyperlinks(url)
+url = "https://service.northeastern.edu/ogs?id=em_knowledge"
+result = extract_content_and_hyperlinks(url)
 
 print("Extracted Hyperlinks:")
-for link in hyperlinks:
+for link in result['hyperlinks']:
     print(link)
+
+print("\nExtracted Content:")
+print(result['content'])
