@@ -30,7 +30,7 @@ def extract_content_and_hyperlinks(url):
 
 
 # Example usage
-url = "https://service.northeastern.edu/welcome"
+url = "https://northeastern.edu/"
 result = extract_content_and_hyperlinks(url)
 
 print("Extracted Hyperlinks:")
